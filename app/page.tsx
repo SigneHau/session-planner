@@ -36,6 +36,7 @@ const Home = () => {
     <main className="items-center gap-2 justify-center flex min-h-screen">
       <Link href="/signin" className="underline">Gå til sign in</Link>
       <Link href="/signup" className="underline">Gå til sign up</Link>
+      <p className="text-white">Har lavet nogle forskellige todos</p>
       {/* We display the converted string in a danish format. Since it is a dateobject we need to convert it to a string. 
       We could also use .toLocaleString for a better format */}
       {/* <p className="text-xl text-white">{sessionDate.toString()}</p> */}
