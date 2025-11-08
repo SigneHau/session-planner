@@ -1,12 +1,8 @@
-import { createClient } from "@supabase/supabase-js";
-
- const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL as string,
-    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY as string,
-);
-
+import { SupabaseClient } from "./supabaseClient";
 
 export async function AddDateToDatabase() {
+
+    const supabase = await SupabaseClient()
 
     const { data } = await supabase.from("dates").insert({
         session_date: new Date(),
@@ -17,6 +13,8 @@ export async function AddDateToDatabase() {
 }
 
 export async function GetDates() {
+
+    const supabase = await SupabaseClient()
 
     const { data } = await supabase.from("dates").select("*");
 
