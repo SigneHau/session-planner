@@ -2,9 +2,9 @@
 
 import { use } from "react"
 
-// NOT PUBLIC ROUTE, ONLY AUTHORISED USERS CAN SEE THIS DASHBOARD
+// NOT PUBLIC ROUTE, ONLY AUTHORISED USERS CAN SEE THIS PROFILE PAGE
 
-const TeacherDashboard = ({ params }: { params: Promise<{ id: string }> }) => {
+const TeacherProfile = ({ params }: { params: Promise<{ id: string }> }) => {
 
     // TODO: Check if there is a logged in user and they are authorised -> else redirect to signin/signup
 
@@ -14,7 +14,7 @@ const TeacherDashboard = ({ params }: { params: Promise<{ id: string }> }) => {
     // TODO: Call the server here and get the teacher info here or maybe get the teacher as a prop from parent
   
   
-    return <div>You are teacher: {teacherId}</div>
+    return <div>Profile: You are teacher: {teacherId}</div>
 }
 
-export default TeacherDashboard
+export default TeacherProfile
