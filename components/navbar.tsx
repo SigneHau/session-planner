@@ -7,22 +7,29 @@ const Navbar = () => {
   return (
     <nav className="bg-card text-card-foreground border-b">
       <div className="px-8 py-4 flex items-center justify-between">
-        <div className="flex gap-2 items-center bg-primary p-2">
+        <Link
+          href="/"
+          className="flex hover:-translate-y-1 hover:border hover:border-primary hover:rounded-lg transition-all gap-2 items-center text-primary p-1"
+        >
           <Image
-            className="bg-white rounded-lg"
+            className="rounded-lg"
             width={60}
             height={30}
             alt="logo"
-            src="/logo.png"
+            src="/logosimple.png"
           />
-          <h2 className="font-black">Session planner</h2>
-        </div>
+          <div className="flex flex-col gap-1">
+          <p className="text-xs font-bold">Session</p>
+          <p className="text-xs font-bold">planner</p>
+          </div>
+        </Link>
+
         <div>
           <h1 className="text-2xl font-bold">Student Dashboard</h1>
           <p className="text-muted-foreground">Welcome, John Doe</p>
         </div>
         <div className="flex gap-4 items-center">
-            <ModeToggle />
+          <ModeToggle />
           <Link href="/signin">
             <Button variant="secondary">Log in as teacher</Button>
           </Link>
