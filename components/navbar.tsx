@@ -12,7 +12,7 @@ const Navbar = () => {
           className="flex hover:-translate-y-1 hover:border hover:border-primary hover:rounded-lg transition-all gap-2 items-center text-primary p-1"
         >
           <Image
-            className="rounded-lg"
+            className="rounded-lg bg-foreground dark:bg-card"
             width={60}
             height={30}
             alt="logo"
