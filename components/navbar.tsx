@@ -31,7 +31,7 @@ const Navbar = () => {
         <div className="flex gap-4 items-center">
           <ModeToggle />
           <Link href="/signin">
-            <Button variant="secondary">Log in as teacher</Button>
+            <Button variant="secondary">Sign in as teacher</Button>
           </Link>
         </div>
       </div>
