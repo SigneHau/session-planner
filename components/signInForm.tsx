@@ -37,7 +37,7 @@ export function SignInForm({
       setIsLoading(true)
 
       // Get the supabase client
-      const supabase = await SupabaseClient()
+      const supabase = SupabaseClient()
 
       // Try to log the user in if there exist a user it succeds
       const { data, error } = await supabase.auth.signInWithPassword({
@@ -48,7 +48,7 @@ export function SignInForm({
       // If we get a token then we succeded and we can redirect to teacher dashboard
       // Redirecting to the specific dynamic user id. We get the user id back from supabase.
       if (data && data?.session?.access_token) {
-        router.push(`/teacher/profile/${data.user.id}`)
+        router.push(`/teacher`)
       }
     } catch (error) {
       console.log("Error logging in the user", error)

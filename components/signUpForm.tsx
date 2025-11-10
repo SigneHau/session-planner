@@ -32,9 +32,10 @@ export function SignUpForm({
 
     setIsLoading(true)
 
-    const supabase = await SupabaseClient()
+    const supabase = SupabaseClient()
 
     try {
+      // Try to sign up the user with supabase
       const { data, error } = await supabase.auth.signUp({
         email: email,
         password: password,
@@ -42,7 +43,7 @@ export function SignUpForm({
 
       // Check if data is valid/exists
       if (data && data.session?.access_token) {
-        router.push(`/teacher/${data.user?.id}`)
+        router.push(`/teacher`)
       }
     } catch (error) {
       console.log("Error creating user", error)
