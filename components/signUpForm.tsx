@@ -1,31 +1,55 @@
-"use client";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+"use client"
+import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent } from "@/components/ui/card"
 import {
   Field,
   FieldDescription,
   FieldGroup,
   FieldLabel,
   FieldSeparator,
-} from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
-import Link from "next/link";
-import { useState } from "react";
-import { SupabaseClient } from "@/data/supabaseClient";
+} from "@/components/ui/field"
+import { Input } from "@/components/ui/input"
+import Link from "next/link"
+import { useState } from "react"
+import { SupabaseClient } from "@/data/supabaseClient"
+import { useRouter } from "next/navigation"
+import { Spinner } from "./ui/spinner"
 
 export function SignUpForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const [email, setEmail] = useState<string>("")
+  const [password, setPassword] = useState<string>("")
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+
+  // Navigation library from next.js
+  const router = useRouter()
 
   const handleSignIn = async (e: any) => {
-    e.preventDefault();
+    e.preventDefault()
 
-    const supabase = await SupabaseClient();
-  };
+    setIsLoading(true)
+
+    const supabase = await SupabaseClient()
+
+    try {
+      const { data, error } = await supabase.auth.signUp({
+        email: email,
+        password: password,
+      })
+
+      // Check if data is valid/exists
+      if (data && data.session?.access_token) {
+        router.push(`/teacher/${data.user?.id}`)
+      }
+    } catch (error) {
+      console.log("Error creating user", error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
@@ -78,7 +102,14 @@ export function SignUpForm({
                 </FieldDescription>
               </Field>
               <Field>
-                <Button type="submit">Create Account</Button>
+                {isLoading ? (
+                  <Button>
+                    <Spinner />
+                    Loading...
+                  </Button>
+                ) : (
+                  <Button type="submit">Create Account</Button>
+                )}
               </Field>
               <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
                 Or continue with
@@ -132,5 +163,5 @@ export function SignUpForm({
         and <a href="#">Privacy Policy</a>.
       </FieldDescription>
     </div>
-  );
+  )
 }
