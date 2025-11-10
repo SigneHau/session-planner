@@ -1,15 +1,40 @@
+"use client"
+
 import Image from "next/image"
 import { Button } from "./ui/button"
 import Link from "next/link"
 import { ModeToggle } from "./modeToggle"
+import { useContext, useState } from "react"
+import { SessionContext } from "@/providers/auth-provider"
+import { SupabaseClient } from "@/data/supabaseClient"
+import { Spinner } from "./ui/spinner"
 
 const Navbar = () => {
+  // Gets the user session data
+  const userSession = useContext(SessionContext)
+  const [isSigningOut, setIsSigningOut] = useState(false)
+
+  const handleSignOut = async () => {
+    setIsSigningOut(true)
+
+    // Try to sign out the user
+    try {
+      const supabase = SupabaseClient()
+
+      const { error } = await supabase.auth.signOut()
+    } catch (error) {
+      console.log("Error signing out", error)
+    } finally {
+      setIsSigningOut(false)
+    }
+  }
+
   return (
     <nav className="bg-card text-card-foreground border-b">
       <div className="px-8 py-4 flex items-center justify-between">
         <Link
           href="/"
-          className="flex hover:-translate-y-1 hover:border hover:border-primary hover:rounded-lg transition-all gap-2 items-center text-primary p-1"
+          className="flex hover:-translate-y-1 hover:rounded-lg transition-all gap-2 items-center text-primary p-1"
         >
           <Image
             className="rounded-lg bg-foreground dark:bg-card"
@@ -19,19 +44,46 @@ const Navbar = () => {
             src="/logosimple.png"
           />
           <div className="flex flex-col gap-1">
-          <p className="text-xs font-bold">Session</p>
-          <p className="text-xs font-bold">planner</p>
+            <p className="text-xs font-bold">Session</p>
+            <p className="text-xs font-bold">planner</p>
           </div>
         </Link>
 
         <div>
-          <h1 className="text-2xl font-bold">Dashboard</h1>
-          <p className="text-muted-foreground">Welcome, John Doe</p>
+          <h1 className="text-2xl font-bold">Sessions</h1>
+          <p className="text-muted-foreground">
+            Welcome{" "}
+            {userSession ? "teacher: " + userSession.user.email : "John Doe"}
+          </p>
         </div>
         <div className="flex gap-4 items-center">
           <ModeToggle />
+          {userSession?.access_token && (
+            <>
+              <Link href="/teacher">
+                <Button>Dashboard</Button>
+              </Link>
+              <Link href="/">
+                <Button variant="outline">Student schedule</Button>
+              </Link>
+            </>
+          )}
+
           <Link href="/signin">
-            <Button variant="secondary">Sign in as teacher</Button>
+            {userSession?.access_token ? (
+              isSigningOut ? (
+                <Button variant="outline">
+                  <Spinner />
+                  Signing out...
+                </Button>
+              ) : (
+                <Button onClick={handleSignOut} variant="outline">
+                  Sign out
+                </Button>
+              )
+            ) : (
+              <Button variant="outline">Sign in as teacher</Button>
+            )}
           </Link>
         </div>
       </div>

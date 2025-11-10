@@ -20,7 +20,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event, session) => {
       // If the user signs out we need to kill the session
-      // TODO: Maybe also clear the session in localstorage
         if (event === "SIGNED_OUT") {
         setSession(null)
       } else if (session) {
