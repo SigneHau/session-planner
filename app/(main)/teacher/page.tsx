@@ -4,15 +4,16 @@ import { Button } from "@/components/ui/button"
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty"
 import { SessionContext } from "@/providers/auth-provider"
 import { NotebookPen } from "lucide-react"
+import { redirect, useRouter } from "next/navigation"
 import { useContext } from "react"
 
 const TeacherDashboard = () => {
   // Gets the user session from the context API provided by the auth-provider component that wraps root layout.tsx
   const session = useContext(SessionContext)
 
-  // If no session or user then return something/loading state
+  // If no session or user redirect to home page
   if (!session) {
-    return <div>No user is signed in.</div>
+    redirect('/')
   }
 
   return (
