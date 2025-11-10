@@ -30,62 +30,47 @@ const Navbar = () => {
   }
 
   return (
-    <nav className="bg-card text-card-foreground border-b">
-      <div className="px-8 py-4 flex items-center justify-between">
-        <Link
-          href="/"
-          className="flex hover:-translate-y-1 hover:rounded-lg transition-all gap-2 items-center text-primary p-1"
-        >
-          <Image
-            className="rounded-lg bg-foreground dark:bg-card"
-            width={60}
-            height={30}
-            alt="logo"
-            src="/logosimple.png"
-          />
-          <div className="flex flex-col gap-1">
-            <p className="text-xs font-bold">Session</p>
-            <p className="text-xs font-bold">planner</p>
-          </div>
-        </Link>
-
-        <div>
-          <h1 className="text-2xl font-bold">Sessions</h1>
-          <p className="text-muted-foreground">
-            Welcome{" "}
-            {userSession ? "teacher: " + userSession.user.email : "John Doe"}
-          </p>
+    <nav className="bg-card px-8 py-1 flex items-center justify-between text-card-foreground border-b rounded-b-2xl">
+      <Link
+        href="/"
+        className="flex hover:-translate-y-1 hover:rounded-lg transition-all gap-2 items-center text-primary p-1"
+      >
+        <Image width={45} height={30} alt="logo" src="/logocalendar.svg" />
+        <div className="flex flex-col gap-1">
+          <p className="text-xs font-bold">Session</p>
+          <p className="text-xs font-bold">planner</p>
         </div>
-        <div className="flex gap-4 items-center">
-          <ModeToggle />
-          {userSession?.access_token && (
-            <>
-              <Link href="/teacher">
-                <Button>Dashboard</Button>
-              </Link>
-              <Link href="/">
-                <Button variant="outline">Student schedule</Button>
-              </Link>
-            </>
-          )}
+      </Link>
 
-          <Link href="/signin">
-            {userSession?.access_token ? (
-              isSigningOut ? (
-                <Button variant="outline">
-                  <Spinner />
-                  Signing out...
-                </Button>
-              ) : (
-                <Button onClick={handleSignOut} variant="outline">
-                  Sign out
-                </Button>
-              )
+      <div className="flex gap-4 items-center">
+        <ModeToggle />
+        {userSession?.access_token && (
+          <>
+            <Link href="/teacher">
+              <Button>Dashboard</Button>
+            </Link>
+            <Link href="/">
+              <Button variant="outline">Student schedule</Button>
+            </Link>
+          </>
+        )}
+
+        <Link href="/signin">
+          {userSession?.access_token ? (
+            isSigningOut ? (
+              <Button variant="outline">
+                <Spinner />
+                Signing out...
+              </Button>
             ) : (
-              <Button variant="outline">Sign in as teacher</Button>
-            )}
-          </Link>
-        </div>
+              <Button onClick={handleSignOut} variant="outline">
+                Sign out
+              </Button>
+            )
+          ) : (
+            <Button variant="outline">Sign in as teacher</Button>
+          )}
+        </Link>
       </div>
     </nav>
   )

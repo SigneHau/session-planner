@@ -2,7 +2,6 @@ import type { Metadata } from "next"
 import { Geist, Geist_Mono } from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "@/providers/theme-provider"
-import Navbar from "@/components/navbar"
 import { AuthProvider } from "@/providers/auth-provider"
 
 const geistSans = Geist({
@@ -28,7 +27,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`bg-muted ${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <AuthProvider>
           {/* This provides the theme context and enables a setter function that can set theme to localstorage   */}
