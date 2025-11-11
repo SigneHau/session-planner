@@ -152,9 +152,9 @@ export function SignUpForm({
           </form>
           <div className="bg-muted relative hidden md:block">
             <img
-              src="/session-vertical.webp"
+              src="/logocalendar.svg"
               alt="Image"
-              className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.8] dark:grayscale"
+              className="absolute inset-0 h-full w-full object-fit dark:brightness-[0.9]"
             />
           </div>
         </CardContent>
