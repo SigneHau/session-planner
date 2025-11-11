@@ -1,23 +1,14 @@
-import { SupabaseClient } from "./supabaseClient";
+import { sessionProps } from "@/lib/types"
+import { SupabaseClient } from "./supabaseClient"
 
-export async function AddDateToDatabase() {
+export async function AddNewSessionToDb(session : sessionProps) {
 
-    const supabase = await SupabaseClient()
+  const supabase = SupabaseClient()
 
-    const { data } = await supabase.from("dates").insert({
-        session_date: new Date(),
-    });
+  const { data, error } = await supabase
+    .from("sessions")
+    .insert(session)
+    .select()
 
-    return data;
-
-}
-
-export async function GetDates() {
-
-    const supabase = await SupabaseClient()
-
-    const { data } = await supabase.from("dates").select("*");
-
-    return data;
-
+  return {data: data, error: error}
 }

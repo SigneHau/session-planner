@@ -1,5 +1,9 @@
 // Session type
-type sessionProps = {
-   // TODO: Create the session type with the same structure as the supabase table
-    
+export type sessionProps = {
+  title: string,
+  description: string,
+  location: string,
+  subject: string,
+  starts_at: string,
+  ends_at: string,
 }

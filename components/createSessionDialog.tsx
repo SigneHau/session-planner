@@ -28,10 +28,13 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu"
 import { combineDateAndTime } from "@/lib/utils"
+import { AddNewSessionToDb } from "@/data/supabase"
+import { Spinner } from "./ui/spinner"
 
 export function CreateSessionDialog() {
   const [open, setOpen] = useState(false)
   const [dialogOpen, setDialogOpen] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
   // Hooks for tracking session input
   const [title, setTitle] = useState<string>("")
@@ -44,6 +47,8 @@ export function CreateSessionDialog() {
 
   const handleCreateSession = async (e: React.FormEvent) => {
     e.preventDefault()
+
+    setIsLoading(true)
 
     if (!date) {
       // handle missing date (show error UI, toast, etc.). For now just return.
@@ -65,15 +70,21 @@ export function CreateSessionDialog() {
     }
 
     try {
-      console.log("Session:", session)
+      // Create the session in supabase
+      const { data, error } = await AddNewSessionToDb(session)
 
-      // TODO: send to Supabase
-      // const { data, error } = await supabase.from('sessions').insert([session]).select()
+      if (!error) {
+        // TODO: Make a toast if succesful
 
-      // Close dialog if succesful
-      setDialogOpen(false)
+        // Close dialog if succesful
+        setDialogOpen(false)
+      } else {
+        console.log("Error creating session", error.message)
+      }
     } catch (error) {
       console.log("Error creating session", error)
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -204,7 +215,14 @@ export function CreateSessionDialog() {
             <DialogClose asChild>
               <Button variant="outline">Cancel</Button>
             </DialogClose>
-            <Button type="submit">Create</Button>
+            {isLoading ? (
+              <Button>
+                <Spinner />
+                Creating...
+              </Button>
+            ) : (
+              <Button type="submit">Create</Button>
+            )}
           </DialogFooter>
         </form>
       </DialogContent>
