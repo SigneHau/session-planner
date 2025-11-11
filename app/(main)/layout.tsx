@@ -12,7 +12,6 @@ export default function DashboardLayout({
     <>
       <Navbar />
       {children}
-      {/* TODO: Create and import Footer component here */}
     </>
   )
 }
