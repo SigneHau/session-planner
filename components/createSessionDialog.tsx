@@ -13,18 +13,36 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Popover, PopoverContent, PopoverTrigger } from "@radix-ui/react-popover"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@radix-ui/react-popover"
 import { ChevronDownIcon } from "lucide-react"
 import { useState } from "react"
 import { Calendar } from "./calendar"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu"
 
 export function CreateSessionDialog() {
   const [open, setOpen] = useState(false)
+  
+  // Hooks for tracking session input
+  const [title, setTitle] = useState<string>("")
+  const [description, setDescription] = useState<string>("")
+  const [location, setLocation] = useState<string>("")
+  const [subject, setSubject] = useState<string>("")
   const [date, setDate] = useState<Date | undefined>(undefined)
+  const [startTime, setStartTime] = useState<string>("10:30:00")
+  const [endTime, setEndTime] = useState<string>("12:30:00")
 
-  // TODO: Create onChange events for the input and statevariables to track the user intut
-  // Then create the handleCreateSession function and create a session in supabase
-  const handleCreateSession = async () => {
+  const handleCreateSession = async (e: React.FormEvent) => {
+    e.preventDefault()
+
     return
   }
 
@@ -32,7 +50,7 @@ export function CreateSessionDialog() {
     <Dialog>
       <form onSubmit={handleCreateSession}>
         <DialogTrigger asChild>
-          <Button variant="outline">Create session</Button>
+          <Button variant="outline">Create session {date?.toLocaleString()}</Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
@@ -48,25 +66,43 @@ export function CreateSessionDialog() {
               <Input
                 id="title"
                 name="title"
+                onChange={(e) => setTitle(e.target.value)}
               />
             </div>
             <div className="grid gap-3">
               <Label htmlFor="description">Description</Label>
               <Input
+                onChange={(e) => setDescription(e.target.value)}
                 id="description"
                 name="description"
               />
             </div>
             <div className="grid gap-3">
-              <Label htmlFor="Subject">Subject</Label>
-              <Input
-                id="Subject"
-                name="Subject"
-              />
+              <Label>Subject</Label>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline">
+                    {subject ? subject : "Select subject"}
+                    <span className="sr-only">Toggle theme</span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem onSelect={() => setSubject("Programming")}>
+                    Programming
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onSelect={() => setSubject("User testing")}>
+                    User testing
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onSelect={() => setSubject("UX design")}>
+                    UX design
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
             <div className="grid gap-3">
               <Label htmlFor="Subject">Location</Label>
               <Input
+                onChange={(e) => setLocation(e.target.value)}
                 id="Location"
                 name="Location"
               />
@@ -113,7 +149,8 @@ export function CreateSessionDialog() {
                   type="time"
                   id="time-picker"
                   step="1"
-                  defaultValue="10:30:00"
+                  onChange={(e) => setStartTime(e.target.value)}
+                  defaultValue={startTime}
                   className="bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
                 />
               </div>
@@ -125,7 +162,8 @@ export function CreateSessionDialog() {
                   type="time"
                   id="time-picker"
                   step="1"
-                  defaultValue="12:30:00"
+                  onChange={(e) => setEndTime(e.target.value)}
+                  defaultValue={endTime}
                   className="bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
                 />
               </div>
