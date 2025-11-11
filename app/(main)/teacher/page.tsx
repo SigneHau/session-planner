@@ -1,5 +1,6 @@
 "use client"
 
+import { CreateSessionDialog } from "@/components/createSessionDialog"
 import { Button } from "@/components/ui/button"
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty"
 import { SessionContext } from "@/providers/auth-provider"
@@ -28,6 +29,7 @@ const TeacherDashboard = () => {
             you want your students to see.
           </p>
         </div>
+        <CreateSessionDialog />
         <Empty className="border-2 border-dashed">
           <EmptyHeader>
             <EmptyMedia variant="icon">
