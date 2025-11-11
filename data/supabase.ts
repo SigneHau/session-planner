@@ -12,3 +12,15 @@ export async function AddNewSessionToDb(session : sessionProps) {
 
   return {data: data, error: error}
 }
+
+
+export async function GetSessions() {
+
+  const supabase = SupabaseClient()
+
+  const { data, error } = await supabase
+  .from('sessions')
+  .select()
+
+  return {data: data, error: error}
+}
