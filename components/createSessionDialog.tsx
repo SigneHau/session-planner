@@ -27,10 +27,12 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu"
+import { combineDateAndTime } from "@/lib/utils"
 
 export function CreateSessionDialog() {
   const [open, setOpen] = useState(false)
-  
+  const [dialogOpen, setDialogOpen] = useState(false)
+
   // Hooks for tracking session input
   const [title, setTitle] = useState<string>("")
   const [description, setDescription] = useState<string>("")
@@ -43,16 +45,45 @@ export function CreateSessionDialog() {
   const handleCreateSession = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    return
+    if (!date) {
+      // handle missing date (show error UI, toast, etc.). For now just return.
+      console.error("No date selected")
+      return
+    }
+
+    const startsAt = combineDateAndTime(date, startTime)
+    const endsAt = combineDateAndTime(date, endTime)
+
+    // Convert to ISO to send to Supabase (timestamptz)
+    const session = {
+      title,
+      description,
+      location,
+      subject,
+      starts_at: startsAt.toISOString(),
+      ends_at: endsAt.toISOString(),
+    }
+
+    try {
+      console.log("Session:", session)
+
+      // TODO: send to Supabase
+      // const { data, error } = await supabase.from('sessions').insert([session]).select()
+
+      // Close dialog if succesful
+      setDialogOpen(false)
+    } catch (error) {
+      console.log("Error creating session", error)
+    }
   }
 
   return (
-    <Dialog>
-      <form onSubmit={handleCreateSession}>
-        <DialogTrigger asChild>
-          <Button variant="outline">Create session {date?.toLocaleString()}</Button>
-        </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px]">
+    <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+      <DialogTrigger asChild>
+        <Button variant="outline">Create session</Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[425px]">
+        <form onSubmit={handleCreateSession}>
           <DialogHeader>
             <DialogTitle>Create session</DialogTitle>
             <DialogDescription>
@@ -169,14 +200,14 @@ export function CreateSessionDialog() {
               </div>
             </div>
           </div>
-          <DialogFooter>
+          <DialogFooter className="mt-4">
             <DialogClose asChild>
               <Button variant="outline">Cancel</Button>
             </DialogClose>
             <Button type="submit">Create</Button>
           </DialogFooter>
-        </DialogContent>
-      </form>
+        </form>
+      </DialogContent>
     </Dialog>
   )
 }
