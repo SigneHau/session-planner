@@ -30,11 +30,13 @@ import {
 import { combineDateAndTime } from "@/lib/utils"
 import { AddNewSessionToDb } from "@/data/supabase"
 import { Spinner } from "./ui/spinner"
+import Toast from "./toast"
 
 export function CreateSessionDialog() {
   const [open, setOpen] = useState(false)
   const [dialogOpen, setDialogOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [showToast, setShowToast] = useState(false)
 
   // Hooks for tracking session input
   const [title, setTitle] = useState<string>("")
@@ -45,6 +47,7 @@ export function CreateSessionDialog() {
   const [startTime, setStartTime] = useState<string>("10:30:00")
   const [endTime, setEndTime] = useState<string>("12:30:00")
 
+  // Form handler and adds session to database 
   const handleCreateSession = async (e: React.FormEvent) => {
     e.preventDefault()
 
@@ -74,7 +77,8 @@ export function CreateSessionDialog() {
       const { data, error } = await AddNewSessionToDb(session)
 
       if (!error) {
-        // TODO: Make a toast if succesful
+        // Make a toast if succesful
+        setShowToast(true)
 
         // Close dialog if succesful
         setDialogOpen(false)
@@ -89,143 +93,152 @@ export function CreateSessionDialog() {
   }
 
   return (
-    <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-      <DialogTrigger asChild>
-        <Button variant="outline">Create session</Button>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
-        <form onSubmit={handleCreateSession}>
-          <DialogHeader>
-            <DialogTitle>Create session</DialogTitle>
-            <DialogDescription>
-              Choose the different options for creating a session that the
-              students can see
-            </DialogDescription>
-          </DialogHeader>
-          <div className="grid gap-4">
-            <div className="grid gap-3">
-              <Label htmlFor="title">Session title</Label>
-              <Input
-                id="title"
-                name="title"
-                onChange={(e) => setTitle(e.target.value)}
-              />
-            </div>
-            <div className="grid gap-3">
-              <Label htmlFor="description">Description</Label>
-              <Input
-                onChange={(e) => setDescription(e.target.value)}
-                id="description"
-                name="description"
-              />
-            </div>
-            <div className="grid gap-3">
-              <Label>Subject</Label>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="outline">
-                    {subject ? subject : "Select subject"}
-                    <span className="sr-only">Toggle theme</span>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuItem onSelect={() => setSubject("Programming")}>
-                    Programming
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onSelect={() => setSubject("User testing")}>
-                    User testing
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onSelect={() => setSubject("UX design")}>
-                    UX design
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
-            <div className="grid gap-3">
-              <Label htmlFor="Subject">Location</Label>
-              <Input
-                onChange={(e) => setLocation(e.target.value)}
-                id="Location"
-                name="Location"
-              />
-            </div>
-            {/* Date picker */}
-            <div className="flex gap-4">
-              <div className="flex flex-col gap-3">
-                <Label htmlFor="date-picker" className="px-1">
-                  Date
-                </Label>
-                <Popover open={open} onOpenChange={setOpen}>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant="outline"
-                      id="date-picker"
-                      className="w-32 justify-between font-normal"
-                    >
-                      {date ? date.toLocaleDateString() : "Select date"}
-                      <ChevronDownIcon />
+    <>
+    {/* Toast */}
+      <Toast showToast={showToast} setShowToast={setShowToast}/>
+    {/* Dialog */}
+      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        <DialogTrigger asChild>
+          <Button variant="outline">Create session</Button>
+        </DialogTrigger>
+        <DialogContent className="sm:max-w-[425px]">
+          <form onSubmit={handleCreateSession}>
+            <DialogHeader>
+              <DialogTitle>Create session</DialogTitle>
+              <DialogDescription>
+                Choose the different options for creating a session that the
+                students can see
+              </DialogDescription>
+            </DialogHeader>
+            <div className="grid gap-4">
+              <div className="grid gap-3">
+                <Label htmlFor="title">Session title</Label>
+                <Input
+                  id="title"
+                  name="title"
+                  onChange={(e) => setTitle(e.target.value)}
+                />
+              </div>
+              <div className="grid gap-3">
+                <Label htmlFor="description">Description</Label>
+                <Input
+                  onChange={(e) => setDescription(e.target.value)}
+                  id="description"
+                  name="description"
+                />
+              </div>
+              <div className="grid gap-3">
+                <Label>Subject</Label>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline">
+                      {subject ? subject : "Select subject"}
+                      <span className="sr-only">Toggle theme</span>
                     </Button>
-                  </PopoverTrigger>
-                  <PopoverContent
-                    className="w-auto overflow-hidden p-0"
-                    align="start"
-                    sideOffset={12}
-                  >
-                    <Calendar
-                      mode="single"
-                      selected={date}
-                      captionLayout="dropdown"
-                      onSelect={(date) => {
-                        setDate(date)
-                        setOpen(false)
-                      }}
-                    />
-                  </PopoverContent>
-                </Popover>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuItem
+                      onSelect={() => setSubject("Programming")}
+                    >
+                      Programming
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onSelect={() => setSubject("User testing")}
+                    >
+                      User testing
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onSelect={() => setSubject("UX design")}>
+                      UX design
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </div>
-              <div className="flex flex-col gap-3">
-                <Label htmlFor="time-picker" className="px-1">
-                  Start time
-                </Label>
+              <div className="grid gap-3">
+                <Label htmlFor="Subject">Location</Label>
                 <Input
-                  type="time"
-                  id="time-picker"
-                  step="1"
-                  onChange={(e) => setStartTime(e.target.value)}
-                  defaultValue={startTime}
-                  className="bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
+                  onChange={(e) => setLocation(e.target.value)}
+                  id="Location"
+                  name="Location"
                 />
               </div>
-              <div className="flex flex-col gap-3">
-                <Label htmlFor="time-picker" className="px-1">
-                  End time
-                </Label>
-                <Input
-                  type="time"
-                  id="time-picker"
-                  step="1"
-                  onChange={(e) => setEndTime(e.target.value)}
-                  defaultValue={endTime}
-                  className="bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
-                />
+              {/* Date picker */}
+              <div className="flex gap-4">
+                <div className="flex flex-col gap-3">
+                  <Label htmlFor="date-picker" className="px-1">
+                    Date
+                  </Label>
+                  <Popover open={open} onOpenChange={setOpen}>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        id="date-picker"
+                        className="w-32 justify-between font-normal"
+                      >
+                        {date ? date.toLocaleDateString() : "Select date"}
+                        <ChevronDownIcon />
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent
+                      className="w-auto overflow-hidden p-0"
+                      align="start"
+                      sideOffset={12}
+                    >
+                      <Calendar
+                        mode="single"
+                        selected={date}
+                        captionLayout="dropdown"
+                        onSelect={(date) => {
+                          setDate(date)
+                          setOpen(false)
+                        }}
+                      />
+                    </PopoverContent>
+                  </Popover>
+                </div>
+                <div className="flex flex-col gap-3">
+                  <Label htmlFor="time-picker" className="px-1">
+                    Start time
+                  </Label>
+                  <Input
+                    type="time"
+                    id="time-picker"
+                    step="1"
+                    onChange={(e) => setStartTime(e.target.value)}
+                    defaultValue={startTime}
+                    className="bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
+                  />
+                </div>
+                <div className="flex flex-col gap-3">
+                  <Label htmlFor="time-picker" className="px-1">
+                    End time
+                  </Label>
+                  <Input
+                    type="time"
+                    id="time-picker"
+                    step="1"
+                    onChange={(e) => setEndTime(e.target.value)}
+                    defaultValue={endTime}
+                    className="bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
+                  />
+                </div>
               </div>
             </div>
-          </div>
-          <DialogFooter className="mt-4">
-            <DialogClose asChild>
-              <Button variant="outline">Cancel</Button>
-            </DialogClose>
-            {isLoading ? (
-              <Button>
-                <Spinner />
-                Creating...
-              </Button>
-            ) : (
-              <Button type="submit">Create</Button>
-            )}
-          </DialogFooter>
-        </form>
-      </DialogContent>
-    </Dialog>
+            <DialogFooter className="mt-4">
+              <DialogClose asChild>
+                <Button variant="outline">Cancel</Button>
+              </DialogClose>
+              {isLoading ? (
+                <Button>
+                  <Spinner />
+                  Creating...
+                </Button>
+              ) : (
+                <Button type="submit">Create</Button>
+              )}
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
+    </>
   )
 }

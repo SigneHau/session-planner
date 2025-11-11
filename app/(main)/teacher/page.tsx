@@ -19,7 +19,7 @@ const TeacherDashboard = () => {
 
   return (
     <section className="bg-muted gap-2 justify-center flex min-h-screen">
-      <div className="w-full p-8 space-y-8">
+      <div className="w-full p-8 space-y-4">
         <div className="flex flex-col gap-2">
           <h1 className="font-black text-xl">
             Create lessons for your students
@@ -40,11 +40,6 @@ const TeacherDashboard = () => {
               Create a new session and display to your students
             </EmptyDescription>
           </EmptyHeader>
-          <EmptyContent>
-            <Button variant="outline" size="sm">
-              Create session
-            </Button>
-          </EmptyContent>
         </Empty>
       </div>
     </section>

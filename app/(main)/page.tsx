@@ -1,4 +1,3 @@
-import Toast from "@/components/toast"
 
 
 const Home = () => {
@@ -7,7 +6,6 @@ const Home = () => {
   return (
     <main className="gap-2 justify-center flex min-h-screen">
       Student public page that displays sessions
-      <Toast />
     </main>
   )
 }
