@@ -1,5 +1,7 @@
 // Session type
 export type sessionProps = {
+  id?: number,
+  teacherId?: number,
   title: string,
   description: string,
   location: string,

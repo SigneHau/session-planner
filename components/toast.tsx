@@ -13,7 +13,7 @@ const Toast = ({
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       setShowToast(false)
-    }, 2000)
+    }, 4000)
     return () => clearTimeout(timeoutId)
   }, [showToast])
 
@@ -22,7 +22,7 @@ const Toast = ({
     <AnimatePresence>
       {showToast && (
         <motion.div
-          initial={{ y: 20, opacity: 0 }}
+          initial={{ y: 20, opacity: 0, }}
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 20, opacity: 0 }}
           className="fixed right-8 bottom-4 z-50"
