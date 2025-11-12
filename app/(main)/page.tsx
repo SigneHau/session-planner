@@ -6,6 +6,7 @@ import { useEffect, useState } from "react"
 import { Skeleton } from "@/components/ui/skeleton"
 import { motion } from "motion/react"
 import SessionCard from "@/components/sessionCard"
+import SessionSkeleton from "@/components/sessionSkeleton"
 
 const Home = () => {
   // Fetch all sessions and display them or empty state if none created
@@ -23,17 +24,6 @@ const Home = () => {
 
     fetchSessions()
   }, [])
-
-  const SkeletonCard = () => (
-    <Card className="max-w-sm col-span-3">
-      <CardContent className="space-y-2">
-        <Skeleton className="h-4 w-1/3" />
-        <Skeleton className="h-4 w-2/3" />
-        <Skeleton className="h-4 w-1/2" />
-        <Skeleton className="h-4 w-1/3" />
-      </CardContent>
-    </Card>
-  )
 
   return (
     <div className="p-8 space-y-4">
@@ -62,7 +52,7 @@ const Home = () => {
           ? sessions.map((session) => (
               <SessionCard key={session.id} {...session} />
             ))
-          : [0, 1, 2, 3, 4, 5, 6, 7].map((i) => <SkeletonCard key={i} />)}
+          : [0, 1, 2, 3, 4, 5, 6, 7].map((i) => <SessionSkeleton key={i} />)}
       </section>
     </div>
   )

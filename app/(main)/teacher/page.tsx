@@ -1,24 +1,45 @@
 "use client"
 
 import { CreateSessionDialog } from "@/components/createSessionDialog"
-import { Button } from "@/components/ui/button"
-import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty"
+import SessionCard from "@/components/sessionCard"
+import SessionSkeleton from "@/components/sessionSkeleton"
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/components/ui/empty"
+import { GetUniqueTeacherSessions } from "@/data/supabase"
 import { SessionContext } from "@/providers/auth-provider"
 import { NotebookPen } from "lucide-react"
-import { redirect, useRouter } from "next/navigation"
-import { useContext, useEffect } from "react"
+import { useRouter } from "next/navigation"
+import { useContext, useEffect, useState } from "react"
 
 const TeacherDashboard = () => {
   // Gets the user session from the context API provided by the auth-provider component that wraps root layout.tsx
   const session = useContext(SessionContext)
   const router = useRouter()
 
-  // IF USER FROM SESSION IS NULL THEN ROUTE THE USER AWAY IF "UNDEFINED" THEN THE USER FROM SESSION IS LOADING
+  // Fetch all sessions and display them or empty state if none created
+  const [sessions, setSessions] = useState<any[] | null>(null)
 
+  // IF USER FROM SESSION IS NULL THEN ROUTE THE USER AWAY IF "UNDEFINED" THEN THE USER FROM SESSION IS LOADING
   useEffect(() => {
     if (session === null) {
       router.replace("/")
     }
+
+    // Fetch the session data unique to the teacher that is logged in on mount
+    const fetchSessions = async () => {
+      const { data, error } = await GetUniqueTeacherSessions()
+      if (error) {
+        console.log("Error fetching data", error.message)
+      } else {
+        setSessions(data)
+      }
+    }
+    fetchSessions()
   }, [session, router])
 
   // Loading state while resolving the initial session
@@ -45,17 +66,25 @@ const TeacherDashboard = () => {
           </p>
         </div>
         <CreateSessionDialog />
-        <Empty className="border-2 border-dashed">
-          <EmptyHeader>
-            <EmptyMedia variant="icon">
-              <NotebookPen />
-            </EmptyMedia>
-            <EmptyTitle>No sessions created</EmptyTitle>
-            <EmptyDescription>
-              Create a new session and display to your students
-            </EmptyDescription>
-          </EmptyHeader>
-        </Empty>
+        <section className="grid grid-cols-12 gap-4">
+          {sessions && sessions.length > 0 ? (
+            sessions.map((session) => (
+              <SessionCard key={session.id} {...session} />
+            ))
+          ) : (
+            <Empty className="col-span-12 border-2 border-dashed">
+              <EmptyHeader>
+                <EmptyMedia variant="icon">
+                  <NotebookPen />
+                </EmptyMedia>
+                <EmptyTitle>No sessions created</EmptyTitle>
+                <EmptyDescription>
+                  Create a new session and display to your students
+                </EmptyDescription>
+              </EmptyHeader>
+            </Empty>
+          )}
+        </section>
       </div>
     </section>
   )
