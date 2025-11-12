@@ -47,7 +47,7 @@ const Navbar = () => {
         {userSession?.access_token && (
           <>
             <Link href="/teacher">
-              <Button>Dashboard</Button>
+              <Button variant="outline">Dashboard</Button>
             </Link>
             <Link href="/">
               <Button variant="outline">Student schedule</Button>

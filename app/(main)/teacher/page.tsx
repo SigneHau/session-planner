@@ -2,7 +2,6 @@
 
 import { CreateSessionDialog } from "@/components/createSessionDialog"
 import SessionCard from "@/components/sessionCard"
-import SessionSkeleton from "@/components/sessionSkeleton"
 import {
   Empty,
   EmptyDescription,
@@ -13,6 +12,7 @@ import {
 import { GetUniqueTeacherSessions } from "@/data/supabase"
 import { SessionContext } from "@/providers/auth-provider"
 import { NotebookPen } from "lucide-react"
+import { motion } from "motion/react"
 import { useRouter } from "next/navigation"
 import { useContext, useEffect, useState } from "react"
 
@@ -57,13 +57,22 @@ const TeacherDashboard = () => {
     <section className="bg-muted gap-2 justify-center flex min-h-screen">
       <div className="w-full p-8 space-y-4">
         <div className="flex flex-col gap-2">
-          <h1 className="font-black text-xl">
+          <motion.h1 
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          className="font-black text-xl">
             Create lessons for your students
-          </h1>
-          <p className="text-muted-foreground max-w-lg">
+          </motion.h1>
+          <motion.p 
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{
+            delay: 0.2,
+          }}
+          className="text-muted-foreground max-w-lg">
             Here you can create a session and choose the different details that
             you want your students to see.
-          </p>
+          </motion.p>
         </div>
         <CreateSessionDialog />
         <section className="grid grid-cols-12 gap-4">

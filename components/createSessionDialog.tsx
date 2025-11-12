@@ -99,7 +99,7 @@ export function CreateSessionDialog() {
     {/* Dialog */}
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogTrigger asChild>
-          <Button variant="outline">Create session</Button>
+          <Button>Create session</Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
           <form onSubmit={handleCreateSession}>
