@@ -28,7 +28,7 @@ const Home = () => {
           An overview of all the student sessions
         </h1>
         <p className="text-muted-foreground max-w-lg">
-          Here you can create a see all the different sessions created by the
+          Here you can see all the different sessions created by the
           teachers at your institution
         </p>
       </div>

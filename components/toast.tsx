@@ -19,7 +19,7 @@ const Toast = ({
 
   return (
     // Toast notification — centered near bottom, pill with icon
-    <AnimatePresence initial={false}>
+    <AnimatePresence>
       {showToast && (
         <motion.div
           initial={{ y: 20, opacity: 0 }}
