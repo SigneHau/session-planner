@@ -50,9 +50,18 @@ const Home = () => {
       <section className="grid grid-cols-12 gap-4">
         {sessions && sessions.length > 0
           ? sessions.map((session) => (
-              <SessionCard key={session.id} {...session} />
-            ))
-          : [0, 1, 2, 3, 4, 5, 6, 7].map((i) => <SessionSkeleton key={i} />)}
+            <div
+              key={session.id}
+              className="col-span-12 md:col-span-4 lg:col-span-3 w-full"
+            >
+              <SessionCard {...session} />
+            </div>
+          ))
+          : [0, 1, 2, 3, 4, 5, 6, 7].map((i) => (
+            <div key={i} className="col-span-6 md:col-span-4 lg:col-span-3 w-full">
+              <SessionSkeleton />
+            </div>
+          ))}
       </section>
     </div>
   )
