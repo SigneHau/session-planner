@@ -1,28 +1,28 @@
 import { Card, CardContent, CardTitle } from "./ui/card"
 import { sessionProps } from "@/lib/types"
 
-const SessionCard = ({ id, title, subject, starts_at, ends_at, location, teacherId, ...props }: sessionProps) => {
+const SessionCard = ({ title, subject, starts_at, ends_at, location }: sessionProps) => {
   return (
-    <Card {...props} className="max-w-sm col-span-3">
+    <Card className="max-w-sm w-full">
       <CardContent className="space-y-2">
+       
         <CardTitle className="text-primary text-xl">{subject}</CardTitle>
 
-        <h2 className=" font-semibold">{title}</h2>
+      
+        <p className="font-semibold">{title}</p>
 
-        <h2 className="flex items-center space-x-2">
-          <h2 className="font-semibold">Dato:</h2>
-          <h2 className="font-light">
-            {new Date(starts_at).toLocaleDateString("dk-DK", {
-              hour12: false,
-            })}
-          </h2>
-        </h2>
+      
+        <div className="flex items-center space-x-2">
+          <span className="font-semibold">Dato:</span>
+          <span className="font-light">
+            {new Date(starts_at).toLocaleDateString("dk-DK", { hour12: false })}
+          </span>
+        </div>
 
-
-        <h2 className="flex items-center space-x-2">
-          <h2 className="font-semibold">Mødetid:</h2>
-
-          <h2 className="font-light">
+        
+        <div className="flex items-center space-x-2">
+          <span className="font-semibold">Mødetid:</span>
+          <span className="font-light">
             {new Date(starts_at).toLocaleTimeString("dk-DK", {
               hour: "2-digit",
               minute: "2-digit",
@@ -34,15 +34,16 @@ const SessionCard = ({ id, title, subject, starts_at, ends_at, location, teacher
               minute: "2-digit",
               hour12: false,
             })}
-          </h2>
-        </h2>
-        <h2 className="flex items-center space-x-2">
-          <h2 className="font-semibold">Lokation:</h2>
-          <h2 className="font-light">{location}</h2>
-        </h2>
+          </span>
+        </div>
 
+      
+        <div className="flex items-center space-x-2">
+          <span className="font-semibold">Lokation:</span>
+          <span className="font-light">{location}</span>
+        </div>
       </CardContent>
-    </Card >
+    </Card>
   )
 }
 
