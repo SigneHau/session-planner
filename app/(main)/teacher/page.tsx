@@ -53,7 +53,7 @@ const TeacherDashboard = () => {
     )
   }
 
-  // Motion library animation variants to enable pip animations
+  // Motion library animation variants to enable animations
   const containerVariant = {
     visible: {
       transition: {

@@ -25,6 +25,22 @@ const Home = () => {
     fetchSessions()
   }, [])
 
+
+    // Motion library animation variants to enable animations
+  const containerVariant = {
+    visible: {
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+    hidden: {},
+  }
+
+  const itemVariant = {
+    visible: { opacity: 1, y: 0 },
+    hidden: { opacity: 0, y: 20 },
+  }
+
   return (
     <div className="p-8 space-y-4">
       <div className="flex flex-col gap-2">
@@ -47,22 +63,26 @@ const Home = () => {
           your institution
         </motion.p>
       </div>
-      <section className="grid grid-cols-12 gap-4">
-        {sessions && sessions.length > 0
-          ? sessions.map((session) => (
-            <div
-              key={session.id}
-              className="col-span-12 md:col-span-4 lg:col-span-3 w-full"
-            >
-              <SessionCard {...session} />
-            </div>
-          ))
-          : [0, 1, 2, 3, 4, 5, 6, 7].map((i) => (
-            <div key={i} className="col-span-6 md:col-span-4 lg:col-span-3 w-full">
-              <SessionSkeleton />
-            </div>
-          ))}
-      </section>
+      {sessions === null ? (
+          <div className="grid grid-cols-12 gap-4">
+            {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((i) => <SessionSkeleton key={i} />)}
+          </div>
+        ) : (
+          <motion.section
+            variants={containerVariant}
+            initial="hidden"
+            animate="visible"
+            className="grid grid-cols-12 gap-4"
+          >
+            {sessions.map((session) => (
+              <motion.div className="col-span-3" variants={itemVariant} key={session.id}>
+                <SessionCard
+                  {...session}
+                />
+              </motion.div>
+            ))}
+          </motion.section>
+        )}
     </div>
   )
 }
