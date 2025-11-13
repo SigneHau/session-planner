@@ -1,9 +1,9 @@
 import { Card, CardContent, CardTitle } from "./ui/card"
 import { sessionProps } from "@/lib/types"
 
-const SessionCard = ({ id, title, subject, starts_at, ends_at, location, teacherId, ...props }: sessionProps) => {
+const SessionCard = ({ id, title, subject, starts_at, ends_at, location, teacherId }: sessionProps) => {
   return (
-    <Card {...props} className="max-w-sm col-span-3">
+    <Card className="col-span-3">
       <CardContent className="space-y-2">
         <CardTitle className="text-primary text-lg">{subject}</CardTitle>
         <h2 className="font-semibold">{title}</h2>

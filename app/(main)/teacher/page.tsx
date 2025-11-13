@@ -53,35 +53,47 @@ const TeacherDashboard = () => {
     )
   }
 
+  // Motion library animation variants to enable pip animations
+  const containerVariant = {
+    visible: {
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+    hidden: {},
+  }
+
+  const itemVariant = {
+    visible: { opacity: 1, y: 0 },
+    hidden: { opacity: 0, y: 20 },
+  }
+
   return (
     <section className="bg-muted gap-2 justify-center flex min-h-screen">
       <div className="w-full p-8 space-y-4">
         <div className="flex flex-col gap-2">
-          <motion.h1 
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          className="font-black text-xl">
+          <motion.h1
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            className="font-black text-xl"
+          >
             Create lessons for your students
           </motion.h1>
-          <motion.p 
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{
-            delay: 0.2,
-          }}
-          className="text-muted-foreground max-w-lg">
+          <motion.p
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{
+              delay: 0.2,
+            }}
+            className="text-muted-foreground max-w-lg"
+          >
             Here you can create a session and choose the different details that
             you want your students to see.
           </motion.p>
         </div>
         <CreateSessionDialog />
-        <section className="grid grid-cols-12 gap-4">
-          {sessions && sessions.length > 0 ? (
-            sessions.map((session) => (
-              <SessionCard key={session.id} {...session} />
-            ))
-          ) : (
-            <Empty className="col-span-12 border-2 border-dashed">
+        {sessions === null ? (
+          <Empty className="col-span-12 border-2 h-140 border-dashed">
               <EmptyHeader>
                 <EmptyMedia variant="icon">
                   <NotebookPen />
@@ -92,8 +104,22 @@ const TeacherDashboard = () => {
                 </EmptyDescription>
               </EmptyHeader>
             </Empty>
-          )}
-        </section>
+        ) : (
+          <motion.section
+            variants={containerVariant}
+            initial="hidden"
+            animate="visible"
+            className="grid grid-cols-12 gap-4"
+          >
+            {sessions.map((session) => (
+              <motion.div className="col-span-3" variants={itemVariant} key={session.id}>
+                <SessionCard
+                  {...session}
+                />
+              </motion.div>
+            ))}
+          </motion.section>
+        )}
       </div>
     </section>
   )
