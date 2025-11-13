@@ -30,7 +30,7 @@ const Navbar = () => {
   }
 
   return (
-    <nav className="bg-card h-18 px-8 py-1 flex items-center justify-between text-card-foreground border-b rounded-b-2xl">
+    <nav className="bg-card h-15 px-8 py-1 flex items-center justify-between text-card-foreground border-b rounded-b-2xl">
       <Link
         href="/"
         className="flex hover:-translate-y-1 hover:rounded-lg transition-all gap-2 items-center text-primary p-1"

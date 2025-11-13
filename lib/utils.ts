@@ -5,7 +5,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-// Utility: combine a base date (calendar) with a time string "HH:mm" or "HH:mm:ss"
+// Utility: combine a base date (calendar) with a time string in this format "HH:mm:ss"
   export const combineDateAndTime = (baseDate: Date, timeStr: string) => {
     // Split the time string by ":" and change each to an int so the date object can take it
     const parts = timeStr.split(":").map((timePart) => parseInt(timePart, 10) || 0)
