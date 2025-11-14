@@ -8,11 +8,15 @@ import { useContext, useState } from "react"
 import { SessionContext } from "@/providers/auth-provider"
 import { SupabaseClient } from "@/data/supabaseClient"
 import { Spinner } from "./ui/spinner"
+import { usePathname } from "next/navigation"
 
 const Navbar = () => {
   // Gets the user session data
   const userSession = useContext(SessionContext)
   const [isSigningOut, setIsSigningOut] = useState(false)
+
+  // Check current pathname in the URL
+  const pathname = usePathname()
 
   const handleSignOut = async () => {
     setIsSigningOut(true)
@@ -47,10 +51,10 @@ const Navbar = () => {
         {userSession?.access_token && (
           <>
             <Link href="/teacher">
-              <Button variant="outline">Dashboard</Button>
+              <Button variant={pathname === '/teacher' ? 'default' : 'outline'}>Dashboard</Button>
             </Link>
             <Link href="/">
-              <Button variant="outline">Student schedule</Button>
+              <Button variant={pathname === "/" ? 'default' : 'outline'}>Student schedule</Button>
             </Link>
           </>
         )}
