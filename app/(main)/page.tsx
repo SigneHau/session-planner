@@ -60,7 +60,7 @@ const Home = () => {
           className="text-muted-foreground max-w-lg"
         >
           Here you can see all the different sessions created by the teachers at
-          your institution
+          your institution - they can be used for testing and learning
         </motion.p>
       </div>
       {sessions === null ? (
